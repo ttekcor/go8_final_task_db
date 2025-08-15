@@ -114,7 +114,6 @@ func main() {
 	p, err := service.Register(client, address)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
 
 	// изменение адреса
@@ -122,21 +121,18 @@ func main() {
 	err = service.ChangeAddress(p.Number, newAddress)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
 
 	// изменение статуса
 	err = service.NextStatus(p.Number)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
 
 	// вывод посылок клиента
 	err = service.PrintClientParcels(client)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
 
 	// попытка удаления отправленной посылки
@@ -150,21 +146,21 @@ func main() {
 	err = service.PrintClientParcels(client)
 	if err != nil {
 		fmt.Println(err)
-		return
+		
 	}
 
 	// регистрация новой посылки
 	p, err = service.Register(client, address)
 	if err != nil {
 		fmt.Println(err)
-		return
+		
 	}
 
 	// удаление новой посылки
 	err = service.Delete(p.Number)
 	if err != nil {
 		fmt.Println(err)
-		return
+		
 	}
 
 	// вывод посылок клиента
@@ -172,6 +168,5 @@ func main() {
 	err = service.PrintClientParcels(client)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
 }

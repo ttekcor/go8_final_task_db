@@ -50,11 +50,10 @@ func TestAddGetDelete(t *testing.T) {
 	// проверьте, что значения всех полей в полученном объекте совпадают со значениями полей в переменной parcel
 	retrievedParcel, err := store.Get(id)
 	require.NoError(t, err)
-	require.Equal(t, parcel.Client, retrievedParcel.Client)
-	require.Equal(t, parcel.Status, retrievedParcel.Status)
-	require.Equal(t, parcel.Address, retrievedParcel.Address)
-	require.Equal(t, parcel.CreatedAt, retrievedParcel.CreatedAt)
-	require.Equal(t, id, retrievedParcel.Number)
+
+	expectedParcel := parcel
+	expectedParcel.Number = id
+	require.Equal(t, expectedParcel, retrievedParcel)
 
 	// delete
 	// удалите добавленную посылку, убедитесь в отсутствии ошибки
@@ -92,7 +91,11 @@ func TestSetAddress(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что адрес обновился
 	retrievedParcel, err := store.Get(id)
 	require.NoError(t, err)
-	require.Equal(t, newAddress, retrievedParcel.Address)
+
+	expectedParcel := parcel
+	expectedParcel.Number = id
+	expectedParcel.Address = newAddress
+	require.Equal(t, expectedParcel, retrievedParcel)
 }
 
 // TestSetStatus проверяет обновление статуса
@@ -120,7 +123,11 @@ func TestSetStatus(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что статус обновился
 	retrievedParcel, err := store.Get(id)
 	require.NoError(t, err)
-	require.Equal(t, ParcelStatusSent, retrievedParcel.Status)
+
+	expectedParcel := parcel
+	expectedParcel.Number = id
+	expectedParcel.Status = ParcelStatusSent
+	require.Equal(t, expectedParcel, retrievedParcel)
 }
 
 // TestGetByClient проверяет получение посылок по идентификатору клиента
@@ -170,9 +177,6 @@ func TestGetByClient(t *testing.T) {
 		// убедитесь, что значения полей полученных посылок заполнены верно
 		expectedParcel, exists := parcelMap[parcel.Number]
 		require.True(t, exists)
-		require.Equal(t, expectedParcel.Client, parcel.Client)
-		require.Equal(t, expectedParcel.Status, parcel.Status)
-		require.Equal(t, expectedParcel.Address, parcel.Address)
-		require.Equal(t, expectedParcel.CreatedAt, parcel.CreatedAt)
+		require.Equal(t, expectedParcel, parcel)
 	}
 }
